@@ -14,6 +14,29 @@ class CreateTrail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateTrailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var markerListFragment = MarkerListFragment()
+        var markerCreateFragment = MarkerCreateFragment()
+
+        supportFragmentManager.beginTransaction().apply{
+            replace(R.id.flFragment, markerListFragment)
+            commit()
+        }
+
+        binding.btnMarkers.setOnClickListener{
+            supportFragmentManager.beginTransaction().apply{
+                replace(R.id.flFragment, markerListFragment)
+                commit()
+            }
+        }
+
+        binding.btnNewMarker
+            .setOnClickListener{
+            supportFragmentManager.beginTransaction().apply{
+                replace(R.id.flFragment, markerCreateFragment)
+                commit()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
