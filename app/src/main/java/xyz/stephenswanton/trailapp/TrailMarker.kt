@@ -1,5 +1,8 @@
 package xyz.stephenswanton.trailapp
 
 data class TrailMarker (
-    var markerName: String
+    var latitude: String,
+    var longitude: String,
+    var notes: String = "",
+
     )
