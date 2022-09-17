@@ -10,16 +10,15 @@ import xyz.stephenswanton.trailapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    var app : MainApp? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val trails = mutableListOf(
-            Trail("Trail 1")
-        )
-        val adapter = TrailAdapter(trails)
+        app = application as MainApp
+        val adapter = TrailAdapter(app!!.trails)
         binding.rvTrails.adapter = adapter
         binding.rvTrails.layoutManager = LinearLayoutManager(this)
     }
