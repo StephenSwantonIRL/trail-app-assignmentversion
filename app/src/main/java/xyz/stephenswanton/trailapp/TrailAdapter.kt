@@ -5,8 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import xyz.stephenswanton.trailapp.databinding.ItemTrailBinding
 
-class TrailAdapter constructor(
-    var trails: List<Trail>
+interface TrailListener {
+    fun onEditIconClick(trail: Trail)
+}
+
+
+class TrailAdapter(
+    var trails: List<Trail>,
+    var listener: TrailListener
 ): RecyclerView.Adapter<TrailAdapter.TrailViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailViewHolder {
@@ -18,7 +24,7 @@ class TrailAdapter constructor(
 
     override fun onBindViewHolder(holder: TrailAdapter.TrailViewHolder, position: Int) {
         val trail = trails[position]
-        holder.bind(trail)
+        holder.bind(trail, listener)
         }
 
     override fun getItemCount(): Int {
@@ -28,8 +34,9 @@ class TrailAdapter constructor(
     class TrailViewHolder(private val binding : ItemTrailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(trail: Trail) {
+        fun bind(trail: Trail, listener: TrailListener) {
             binding.tvTrailName.text = trail.name
+            binding.root.setOnClickListener { listener.onEditIconClick(trail) }
         }
     }
 }

@@ -1,36 +1,42 @@
 package xyz.stephenswanton.trailapp
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.recyclerview.widget.LinearLayoutManager
-import xyz.stephenswanton.trailapp.databinding.ActivityCreateTrailBinding
+import xyz.stephenswanton.trailapp.databinding.ActivityViewTrailBinding
 
-class CreateTrail : AppCompatActivity() {
-    private lateinit var binding: ActivityCreateTrailBinding
+class ViewTrail : AppCompatActivity() {
+    private lateinit var binding: ActivityViewTrailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateTrailBinding.inflate(layoutInflater)
+        binding = ActivityViewTrailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         var markerListFragment = MarkerListFragment()
+        var trailMapFragment = TrailMapFragment()
 
         supportFragmentManager.beginTransaction().apply{
             replace(R.id.flFragment, markerListFragment)
             commit()
         }
 
-        binding.btnNewMarker
-            .setOnClickListener{
-             Intent(this, CreateMarker::class.java ).also{
-                 startActivity(it)
-             }
+        binding.btnMarkers.setOnClickListener{
+            supportFragmentManager.beginTransaction().apply{
+                replace(R.id.flFragment, markerListFragment)
+                commit()
             }
         }
 
+        binding.btnMapView
+            .setOnClickListener{
+            supportFragmentManager.beginTransaction().apply{
+                replace(R.id.flFragment, trailMapFragment)
+                commit()
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.create_trail_menu, menu)

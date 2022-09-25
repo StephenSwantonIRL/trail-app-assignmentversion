@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.stephenswanton.trailapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TrailListener {
     private lateinit var binding: ActivityMainBinding
     var app : MainApp? = null
 
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         app = application as MainApp
-        val adapter = TrailAdapter(app!!.trails)
+        val adapter = TrailAdapter(app!!.trails, this)
         binding.rvTrails.adapter = adapter
         binding.rvTrails.layoutManager = LinearLayoutManager(this)
     }
@@ -35,5 +35,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    override fun onEditIconClick(trail: Trail) {
+        Intent(this, ViewTrail::class.java).also{
+            startActivity(it)
+        }
     }
 }
