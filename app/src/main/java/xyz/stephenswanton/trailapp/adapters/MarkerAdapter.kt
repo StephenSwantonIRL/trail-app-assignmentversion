@@ -1,8 +1,9 @@
-package xyz.stephenswanton.trailapp
+package xyz.stephenswanton.trailapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import xyz.stephenswanton.trailapp.models.TrailMarker
 import xyz.stephenswanton.trailapp.databinding.ItemMarkerBinding
 
 class MarkerAdapter constructor(
@@ -16,7 +17,7 @@ class MarkerAdapter constructor(
         return MarkerViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MarkerAdapter.MarkerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MarkerViewHolder, position: Int) {
         val marker = markers[position]
         holder.bind(marker)
     }

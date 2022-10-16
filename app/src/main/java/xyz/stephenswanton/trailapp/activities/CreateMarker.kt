@@ -1,9 +1,10 @@
-package xyz.stephenswanton.trailapp
+package xyz.stephenswanton.trailapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import xyz.stephenswanton.trailapp.R
 import xyz.stephenswanton.trailapp.databinding.ActivityCreateMarkerBinding
 
 class CreateMarker : AppCompatActivity() {

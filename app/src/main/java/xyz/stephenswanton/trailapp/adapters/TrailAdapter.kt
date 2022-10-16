@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import xyz.stephenswanton.trailapp.databinding.ItemTrailBinding
+import xyz.stephenswanton.trailapp.models.Trail
 
 interface TrailListener {
     fun onEditIconClick(trail: Trail)

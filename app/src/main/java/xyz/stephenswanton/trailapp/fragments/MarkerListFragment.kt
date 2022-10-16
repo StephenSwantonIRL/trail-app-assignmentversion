@@ -1,4 +1,4 @@
-package xyz.stephenswanton.trailapp
+package xyz.stephenswanton.trailapp.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import xyz.stephenswanton.trailapp.adapters.MarkerAdapter
+import xyz.stephenswanton.trailapp.R
+import xyz.stephenswanton.trailapp.models.TrailMarker
 import xyz.stephenswanton.trailapp.databinding.FragmentMarkerListBinding
 
 class MarkerListFragment : Fragment(){

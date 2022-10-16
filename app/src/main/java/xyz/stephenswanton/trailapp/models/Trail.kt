@@ -1,4 +1,4 @@
-package xyz.stephenswanton.trailapp
+package xyz.stephenswanton.trailapp.models
 
 data class Trail(
     var name: String,
