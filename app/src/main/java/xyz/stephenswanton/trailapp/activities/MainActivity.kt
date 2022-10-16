@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity(), TrailListener {
         setContentView(binding.root)
 
         app = application as MainApp
-        val adapter = TrailAdapter(app!!.trails, this)
-        binding.rvTrails.adapter = adapter
+
         binding.rvTrails.layoutManager = LinearLayoutManager(this)
+        loadTrails()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,4 +45,14 @@ class MainActivity : AppCompatActivity(), TrailListener {
             startActivity(it)
         }
     }
+
+    private fun loadTrails() {
+        showTrails(app!!.trails.findAll())
+    }
+
+    private fun showTrails(trails: List<Trail>) {
+        binding.rvTrails.adapter = TrailAdapter(trails, this)
+        binding.rvTrails.adapter?.notifyDataSetChanged()
+    }
+
 }
