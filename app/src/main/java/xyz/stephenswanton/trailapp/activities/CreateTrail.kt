@@ -85,6 +85,10 @@ class CreateTrail : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+            R.id.miSave -> {
+                app!!.trails.create(app!!.tempTrail)
+                finish()
+            };
             R.id.miCancel -> finish();
         }
         return true
