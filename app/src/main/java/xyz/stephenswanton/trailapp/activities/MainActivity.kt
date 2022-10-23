@@ -12,7 +12,7 @@ import xyz.stephenswanton.trailapp.main.MainApp
 import xyz.stephenswanton.trailapp.models.Trail
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-
+import timber.log.Timber.i
 
 
 class MainActivity : AppCompatActivity(), TrailListener {
@@ -48,7 +48,10 @@ class MainActivity : AppCompatActivity(), TrailListener {
     }
 
     override fun onEditIconClick(trail: Trail) {
-        Intent(this, ViewTrail::class.java).also{
+        Intent(this, ViewTrail::class.java).apply{
+            putExtra("trail_edit", trail)
+
+        }.also{
             refreshIntentLauncher.launch(it)
         }
     }
