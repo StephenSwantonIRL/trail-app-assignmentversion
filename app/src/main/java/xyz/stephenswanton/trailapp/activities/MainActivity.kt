@@ -10,9 +10,15 @@ import xyz.stephenswanton.trailapp.*
 import xyz.stephenswanton.trailapp.databinding.ActivityMainBinding
 import xyz.stephenswanton.trailapp.main.MainApp
 import xyz.stephenswanton.trailapp.models.Trail
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+
+
 
 class MainActivity : AppCompatActivity(), TrailListener {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+
     var app : MainApp? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +30,7 @@ class MainActivity : AppCompatActivity(), TrailListener {
 
         binding.rvTrails.layoutManager = LinearLayoutManager(this)
         loadTrails()
+        registerRefreshCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -34,7 +41,7 @@ class MainActivity : AppCompatActivity(), TrailListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.miAdd -> Intent(this, CreateTrail::class.java).also{
-                startActivity(it)
+                refreshIntentLauncher.launch(it)
             }
         }
         return true
@@ -42,7 +49,7 @@ class MainActivity : AppCompatActivity(), TrailListener {
 
     override fun onEditIconClick(trail: Trail) {
         Intent(this, ViewTrail::class.java).also{
-            startActivity(it)
+            refreshIntentLauncher.launch(it)
         }
     }
 
@@ -53,6 +60,12 @@ class MainActivity : AppCompatActivity(), TrailListener {
     private fun showTrails(trails: List<Trail>) {
         binding.rvTrails.adapter = TrailAdapter(trails, this)
         binding.rvTrails.adapter?.notifyDataSetChanged()
+    }
+
+    private fun registerRefreshCallback() {
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { binding.rvTrails.adapter?.notifyDataSetChanged() }
     }
 
 }
