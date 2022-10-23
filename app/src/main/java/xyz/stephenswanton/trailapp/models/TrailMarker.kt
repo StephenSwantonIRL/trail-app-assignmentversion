@@ -10,6 +10,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TrailMarker (
+    var id: Long,
     var latitude: String,
     var longitude: String,
     var notes: String = "",

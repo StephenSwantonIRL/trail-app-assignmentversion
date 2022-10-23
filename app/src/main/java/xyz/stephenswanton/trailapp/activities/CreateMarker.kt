@@ -12,6 +12,7 @@ import xyz.stephenswanton.trailapp.main.MainApp
 import xyz.stephenswanton.trailapp.models.TrailMarker
 import timber.log.Timber
 import timber.log.Timber.i
+import xyz.stephenswanton.trailapp.models.generateRandomId
 
 class CreateMarker : AppCompatActivity() {
     private lateinit var binding: ActivityCreateMarkerBinding
@@ -23,7 +24,7 @@ class CreateMarker : AppCompatActivity() {
         binding = ActivityCreateMarkerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         app = application as MainApp
-        var marker = TrailMarker("0","0","")
+        var marker = TrailMarker(generateRandomId(),"0","0", "")
         binding.btnSaveMarker
             .setOnClickListener{
                 marker.latitude = binding.etLatitude.text.toString()

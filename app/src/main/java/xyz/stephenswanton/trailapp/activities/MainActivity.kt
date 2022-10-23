@@ -29,8 +29,24 @@ class MainActivity : AppCompatActivity(), TrailListener {
         app = application as MainApp
 
         binding.rvTrails.layoutManager = LinearLayoutManager(this)
-        loadTrails()
+        var trail: Trail?
         registerRefreshCallback()
+        if (intent.hasExtra("trail_edit")) {
+            intent.extras?.getLong("trail_edit").also{
+                trail = it?.let { item -> app!!.trails.findById(item) }
+            }
+            if(trail != null) {
+                Intent(this, ViewTrail::class.java).apply {
+                    putExtra("trail_edit", trail)
+                }.also {
+                    refreshIntentLauncher.launch(it)
+                }
+            }
+        }
+
+
+        loadTrails()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

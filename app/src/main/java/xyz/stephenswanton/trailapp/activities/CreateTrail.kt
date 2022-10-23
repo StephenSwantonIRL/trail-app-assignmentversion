@@ -29,7 +29,10 @@ class CreateTrail : AppCompatActivity() {
         binding = ActivityCreateTrailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         app = application as MainApp
-
+        var edit = false
+        if (!edit) {
+            app!!.markers = mutableListOf()
+        }
         var markers = app!!.markers
         var markerListFragment = MarkerListFragment()
         var bundle = Bundle()

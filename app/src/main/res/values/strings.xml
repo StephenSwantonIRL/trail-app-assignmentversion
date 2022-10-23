@@ -5,4 +5,5 @@
     <string name="enter_trail_name">Enter Trail Name</string>
     <string name="enter_latitude">Enter Latitude</string>
     <string name="enter_longitude">Enter Longitude</string>
+    <string name="delete_selected">delete selected</string>
 </resources>

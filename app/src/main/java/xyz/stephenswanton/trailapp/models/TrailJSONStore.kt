@@ -6,6 +6,7 @@ import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import xyz.stephenswanton.trailapp.helpers.*
 import timber.log.Timber
+import timber.log.Timber.i
 import java.lang.reflect.Type
 import java.util.*
 
@@ -44,6 +45,42 @@ class TrailJSONStore(private val context: Context) : TrailStore {
     override fun update(trail: Trail) {
         // todo
     }
+
+    override fun findById(trailId: Long): Trail? {
+        var trail: Trail? = null
+        trails.forEach{ item -> if(item.id == trailId){
+            trail = item
+        } }
+        return trail
+    }
+
+    override fun deleteMarkerById(markerId: Long){
+        var trail: Trail? = null
+        trails.forEach{ it.markers.forEach{item -> if(item.id == markerId){
+            it.also { trail = it }
+        } }}
+        i(trail.toString())
+        var newTrails = trails!!.filter{it.id != trail?.id} as MutableList<Trail>
+
+        var modifiedTrail = trails.filter{it.id == trail?.id}
+        if (modifiedTrail.size > 0) {
+            var modifiedMarkers =
+                modifiedTrail[0].markers.filter { it.id != markerId } ?: mutableListOf()
+            modifiedTrail[0].markers = modifiedMarkers as MutableList<TrailMarker>
+            newTrails.add(modifiedTrail[0])
+            trails = newTrails
+        }
+        serialize()
+    }
+
+    override fun idContainingMarker(markerId: Long): Long {
+        var trail: Trail? = null
+        trails.forEach{ it.markers.forEach{item -> if(item.id == markerId){
+            it.also { trail = it }
+        } }}
+        return trail?.id ?: 0
+    }
+
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(trails, listType)

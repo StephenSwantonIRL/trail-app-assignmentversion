@@ -40,6 +40,25 @@ class TempTrailJSONStore(private val context: Context) : TrailStore {
         serialize()
     }
 
+    override fun findById(trailId: Long): Trail? {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteMarkerById(markerId: Long) {
+        TODO("Not yet implemented")
+    }
+
+    override fun idContainingMarker(marker: Long): Long {
+        TODO("Not yet implemented")
+        var value: Long = 0
+        return value
+    }
+
+    fun deleteMarkerById(id: Long, id1: Long) {
+        TODO("Not yet implemented")
+    }
+
+
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(trails, listType)
         write(context, tJSON_FILE, jsonString)
