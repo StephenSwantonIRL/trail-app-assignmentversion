@@ -50,6 +50,7 @@ class CreateTrail : AppCompatActivity() {
                         .show()
                 } else {
                         app!!.tempTrail = trail.copy()
+                        app!!.tempTrailObject.update(app!!.tempTrail)
                         Intent(this, CreateMarker::class.java ).also{
                             refreshIntentLauncher.launch(it)
                 }

@@ -40,6 +40,10 @@ class CreateMarker : AppCompatActivity() {
                     }
                 } else {
                     app!!.markersArray.add(marker.copy())
+                    i(app!!.markersArray.toString())
+                    app!!.tempTrail.markers = mutableListOf<TrailMarker>()
+                    app!!.tempTrail.markers.addAll(app!!.markersArray)
+                    app!!.tempTrailObject.update(app!!.tempTrail)
                     setResult(RESULT_OK)
                     finish()
                 }
