@@ -85,12 +85,12 @@ class ViewTrail : AppCompatActivity() {
             R.id.miSave -> {
 
                 app!!.trails.update(app!!.tempTrail)
+                app!!.resetTempData()
                 finish()
             };
 
             R.id.miCancel -> {
-                app!!.tempTrailObject.deleteAll()
-                app!!.markersArray = mutableListOf()
+                app!!.resetTempData()
                 finish()
             };
         }

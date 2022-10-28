@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
@@ -89,12 +90,16 @@ class CreateTrail : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.miSave -> {
+                if (app!!.tempTrail.name.isEmpty()) {
+                    Toast.makeText(this,R.string.add_a_marker, Toast.LENGTH_LONG).show()
+                } else {
                 app!!.trails.create(app!!.tempTrail)
-                finish()
+                app!!.resetTempData()
+                finish()}
+
             };
             R.id.miCancel -> {
-                app!!.tempTrailObject.deleteAll()
-                app!!.markersArray = mutableListOf()
+                app!!.resetTempData()
                 finish();
                 }
         }

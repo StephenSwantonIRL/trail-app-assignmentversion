@@ -7,4 +7,5 @@
     <string name="enter_longitude">Enter Longitude</string>
     <string name="delete_selected">delete selected</string>
     <string name="save_marker">Save Marker</string>
+    <string name="add_a_marker">You must add a marker to save</string>
 </resources>

@@ -19,4 +19,12 @@ class MainApp : Application() {
     var markers: MutableList<TrailMarker> = mutableListOf()
     var tempTrail: Trail = Trail(0,"","")
 
+    fun resetTempData(){
+        tempTrailObject.deleteAll()
+        markers = mutableListOf()
+        tempTrail = Trail(0,"","")
+        markersArray = mutableListOf()
+    }
+
+
 }
