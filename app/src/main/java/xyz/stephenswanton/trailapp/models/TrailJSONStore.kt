@@ -82,6 +82,16 @@ class TrailJSONStore(private val context: Context) : TrailStore {
     }
 
 
+    override fun deleteAll() {
+            TODO("Not yet implemented")
+        }
+
+    override fun deleteById(trailId: Long) {
+            trails = trails!!.filter{it.id != trailId} as MutableList<Trail>
+            serialize()
+        }
+
+
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(trails, listType)
         write(context, JSON_FILE, jsonString)

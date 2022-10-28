@@ -58,6 +58,13 @@ class TempTrailJSONStore(private val context: Context) : TrailStore {
         TODO("Not yet implemented")
     }
 
+    override fun deleteAll(){
+           trails = mutableListOf()
+           serialize()
+        }
+    override fun deleteById(trailId: Long) {
+        TODO("Not yet implemented")
+        }
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(trails, listType)
