@@ -31,13 +31,13 @@ class MainActivity : AppCompatActivity(), TrailListener {
         binding.rvTrails.layoutManager = LinearLayoutManager(this)
         var trail: Trail?
         registerRefreshCallback()
-        if (intent.hasExtra("trail_edit")) {
-            intent.extras?.getLong("trail_edit").also{
+        if (intent.hasExtra("trail_view")) {
+            intent.extras?.getLong("trail_view").also{
                 trail = it?.let { item -> app!!.trails.findById(item) }
             }
             if(trail != null) {
                 Intent(this, ViewTrail::class.java).apply {
-                    putExtra("trail_edit", trail)
+                    putExtra("trail_view", trail)
                 }.also {
                     refreshIntentLauncher.launch(it)
                 }
@@ -65,12 +65,17 @@ class MainActivity : AppCompatActivity(), TrailListener {
 
     override fun onEditIconClick(trail: Trail) {
         Intent(this, ViewTrail::class.java).apply{
-            putExtra("trail_edit", trail)
+            putExtra("trail_view", trail)
 
         }.also{
             refreshIntentLauncher.launch(it)
         }
     }
+    override fun onDeleteTrailIconClick(trail: Trail) {
+            app!!.trails.deleteById(trail.id)
+            loadTrails()
+        }
+
 
     private fun loadTrails() {
         showTrails(app!!.trails.findAll())
