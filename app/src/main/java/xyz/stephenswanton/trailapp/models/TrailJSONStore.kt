@@ -73,6 +73,15 @@ class TrailJSONStore(private val context: Context) : TrailStore {
         serialize()
     }
 
+    override fun deleteAll() {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteById(trailId: Long) {
+        trails = trails!!.filter{it.id != trailId} as MutableList<Trail>
+        serialize()
+    }
+
     override fun idContainingMarker(markerId: Long): Long {
         var trail: Trail? = null
         trails.forEach{ it.markers.forEach{item -> if(item.id == markerId){

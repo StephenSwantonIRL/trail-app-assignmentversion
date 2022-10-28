@@ -56,7 +56,7 @@ class MarkerListFragment : Fragment(), NavigateAction {
         activity?.let{
             Intent( it, MainActivity::class.java ).apply{
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                putExtra("trail_edit", trailId)
+                putExtra("trail_view", trailId)
             }.also{
                 startActivity(it)
             }

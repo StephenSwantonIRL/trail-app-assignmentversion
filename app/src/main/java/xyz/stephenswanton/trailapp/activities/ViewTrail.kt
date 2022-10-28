@@ -30,10 +30,10 @@ class ViewTrail : AppCompatActivity() {
         var edit = false
         var trail = Trail(generateRandomId(), "", "")
         Timber.i("test")
-        if (intent.hasExtra("trail_edit")) {
+        if (intent.hasExtra("trail_view")) {
 
             edit = true
-            trail = intent.extras?.getParcelable<Trail>("trail_edit")!!
+            trail = intent.extras?.getParcelable<Trail>("trail_view")!!
             binding.tvTrailName.setText(trail.name)
             binding.tvTrailDescription.setText(trail.description)
         }
