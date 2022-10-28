@@ -6,7 +6,5 @@ interface TrailStore {
     fun update(trail: Trail)
     fun findById(trailId: Long): Trail?
     fun deleteMarkerById(markerId: Long)
-    fun deleteAll()
-    fun deleteById(trailId: Long)
     fun idContainingMarker(marker: Long):Long?
 }

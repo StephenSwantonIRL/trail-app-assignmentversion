@@ -29,7 +29,6 @@ class CreateTrail : AppCompatActivity() {
         binding = ActivityCreateTrailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         app = application as MainApp
-        app!!.markersArray = mutableListOf()
         var edit = false
         if (!edit) {
             app!!.markers = mutableListOf()
@@ -93,12 +92,7 @@ class CreateTrail : AppCompatActivity() {
                 app!!.trails.create(app!!.tempTrail)
                 finish()
             };
-            R.id.miCancel -> {
-                app!!.tempTrailObject.deleteAll()
-                app!!.markersArray = mutableListOf()
-                finish();
-            }
-
+            R.id.miCancel -> finish();
         }
         return true
     }
