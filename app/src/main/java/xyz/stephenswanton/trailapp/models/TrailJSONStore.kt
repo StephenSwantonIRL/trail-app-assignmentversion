@@ -43,7 +43,9 @@ class TrailJSONStore(private val context: Context) : TrailStore {
 
 
     override fun update(trail: Trail) {
-        // todo
+        trails = trails!!.filter{it.id != trail.id} as MutableList<Trail>
+        trails.add(trail)
+        serialize()
     }
 
     override fun findById(trailId: Long): Trail? {

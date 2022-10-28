@@ -6,4 +6,5 @@
     <string name="enter_latitude">Enter Latitude</string>
     <string name="enter_longitude">Enter Longitude</string>
     <string name="delete_selected">delete selected</string>
+    <string name="save_marker">Save Marker</string>
 </resources>

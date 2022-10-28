@@ -32,8 +32,20 @@ class MainActivity : AppCompatActivity(), TrailListener {
         var trail: Trail?
         registerRefreshCallback()
         if (intent.hasExtra("trail_view")) {
-            intent.extras?.getLong("trail_view").also{
-                trail = it?.let { item -> app!!.trails.findById(item) }
+            trail = intent.extras?.getParcelable("trail_view")
+            if(trail != null) {
+                trail.markers = app!!.tempTrail.markers
+                Intent(this, ViewTrail::class.java).apply {
+                    putExtra("trail_view", trail)
+                }.also {
+                    refreshIntentLauncher.launch(it)
+                }
+            }
+        }
+        if (intent.hasExtra("marker_view")) {
+            i("sent extra marker_view")
+            intent.extras?.getLong("marker_view").also{
+                trail = it?.let { item -> app!!.trails.findById(app!!.trails.idContainingMarker(item)?: 0)}
             }
             if(trail != null) {
                 Intent(this, ViewTrail::class.java).apply {
@@ -43,6 +55,7 @@ class MainActivity : AppCompatActivity(), TrailListener {
                 }
             }
         }
+
 
 
         loadTrails()
@@ -71,11 +84,11 @@ class MainActivity : AppCompatActivity(), TrailListener {
             refreshIntentLauncher.launch(it)
         }
     }
-    override fun onDeleteTrailIconClick(trail: Trail) {
-            app!!.trails.deleteById(trail.id)
-            loadTrails()
-        }
 
+    override fun onDeleteTrailIconClick(trail: Trail) {
+        app!!.trails.deleteById(trail.id)
+        loadTrails()
+    }
 
     private fun loadTrails() {
         showTrails(app!!.trails.findAll())

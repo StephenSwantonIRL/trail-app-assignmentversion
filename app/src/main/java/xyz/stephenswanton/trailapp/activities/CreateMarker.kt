@@ -25,6 +25,17 @@ class CreateMarker : AppCompatActivity() {
         setContentView(binding.root)
         app = application as MainApp
         var marker = TrailMarker(generateRandomId(),"0","0", "")
+        var edit = false
+
+        if (intent.hasExtra("marker_edit")) {
+            edit = true
+            marker = intent.extras?.getParcelable("marker_edit")!!
+            binding.etLatitude.setText(marker.latitude)
+            binding.etLongitude.setText(marker.longitude)
+            binding.btnSaveMarker.setText(R.string.save_marker)
+        }
+
+
         binding.btnSaveMarker
             .setOnClickListener{
                 marker.latitude = binding.etLatitude.text.toString()
@@ -40,12 +51,22 @@ class CreateMarker : AppCompatActivity() {
                             .show()
                     }
                 } else {
+                    if(edit){
+                        app!!.markersArray = app!!.markersArray.filter{item -> item.id != marker.id} as MutableList<TrailMarker>
+                    }
                     app!!.markersArray.add(marker.copy())
-                    i(app!!.markersArray.toString())
                     app!!.tempTrail.markers = mutableListOf<TrailMarker>()
                     app!!.tempTrail.markers.addAll(app!!.markersArray)
                     app!!.tempTrailObject.update(app!!.tempTrail)
                     setResult(RESULT_OK)
+                    if(edit){
+                        Intent(this, MainActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            putExtra("trail_view", app!!.trails.findById(app!!.trails.idContainingMarker(marker.id)?: 0))
+                        }.also {
+                            startActivity(it)
+                        }
+                    }
                     finish()
                 }
             }

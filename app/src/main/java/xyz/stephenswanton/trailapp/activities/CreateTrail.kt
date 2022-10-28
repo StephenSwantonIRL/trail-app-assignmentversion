@@ -65,7 +65,6 @@ class CreateTrail : AppCompatActivity() {
             refreshIntentLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult())
                 {
-                    i(app!!.markersArray.toString())
                     var markers = app!!.markersArray
                     var markerListFragment = MarkerListFragment()
                     var bundle = Bundle()

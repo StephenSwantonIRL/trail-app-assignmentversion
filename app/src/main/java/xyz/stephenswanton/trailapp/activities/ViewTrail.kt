@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import timber.log.Timber
+import timber.log.Timber.i
 import xyz.stephenswanton.trailapp.R
 import xyz.stephenswanton.trailapp.databinding.ActivityViewTrailBinding
 import xyz.stephenswanton.trailapp.fragments.MarkerListFragment
@@ -29,11 +30,11 @@ class ViewTrail : AppCompatActivity() {
         app = application as MainApp
         var edit = false
         var trail = Trail(generateRandomId(), "", "")
-        Timber.i("test")
         if (intent.hasExtra("trail_view")) {
 
             edit = true
             trail = intent.extras?.getParcelable<Trail>("trail_view")!!
+            app!!.tempTrail = app!!.trails.findById(trail.id) ?: trail
             binding.tvTrailName.setText(trail.name)
             binding.tvTrailDescription.setText(trail.description)
         }
@@ -81,7 +82,17 @@ class ViewTrail : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.miCancel -> finish();
+            R.id.miSave -> {
+
+                app!!.trails.update(app!!.tempTrail)
+                finish()
+            };
+
+            R.id.miCancel -> {
+                app!!.tempTrailObject.deleteAll()
+                app!!.markersArray = mutableListOf()
+                finish()
+            };
         }
         return true
     }
