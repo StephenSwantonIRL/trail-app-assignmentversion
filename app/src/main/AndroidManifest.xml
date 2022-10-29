@@ -12,7 +12,8 @@
         android:theme="@style/Theme.App.Starting">
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,21 +27,20 @@
 
         <activity
             android:name=".activities.CreateTrail"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.TrailApp"/>
         <activity
             android:name=".activities.ViewTrail"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.TrailApp"/>
         <activity
             android:name=".activities.CreateMarker"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.TrailApp"/>
         <activity
             android:name=".activities.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="true"
+            android:theme="@style/Theme.TrailApp">
         </activity>
     </application>
 
