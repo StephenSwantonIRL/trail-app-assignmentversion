@@ -85,7 +85,8 @@ class TrailJSONStore(private val context: Context) : TrailStore {
 
 
     override fun deleteAll() {
-            TODO("Not yet implemented")
+        trails = mutableListOf()
+        serialize()
         }
 
     override fun deleteById(trailId: Long) {

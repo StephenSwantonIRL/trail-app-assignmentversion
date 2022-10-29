@@ -72,6 +72,15 @@ class MainActivity : AppCompatActivity(), TrailListener {
             R.id.miAdd -> Intent(this, CreateTrail::class.java).also{
                 refreshIntentLauncher.launch(it)
             }
+            R.id.miDeleteAll -> {
+                app!!.trails.deleteAll()
+                Intent(this, MainActivity::class.java).apply{
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }.also {
+                    refreshIntentLauncher.launch(it)
+                }
+
+            }
         }
         return true
     }
