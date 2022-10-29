@@ -20,4 +20,5 @@
     <string name="enter_username">enter a username</string>
     <string name="enter_password">enter password</string>
     <string name="account_created">Account created, you may now log in.</string>
+    <string name="select_marker_image">Select an Image</string>
 </resources>
