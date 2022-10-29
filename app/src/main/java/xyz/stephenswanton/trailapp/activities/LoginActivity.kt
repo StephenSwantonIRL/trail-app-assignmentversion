@@ -3,12 +3,14 @@ package xyz.stephenswanton.trailapp.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import at.favre.lib.crypto.bcrypt.BCrypt
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber.i
 import xyz.stephenswanton.trailapp.R
 import xyz.stephenswanton.trailapp.databinding.ActivityLoginBinding
 import xyz.stephenswanton.trailapp.main.MainApp
 import xyz.stephenswanton.trailapp.models.User
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -33,12 +35,10 @@ class LoginActivity : AppCompatActivity() {
             user.username = binding.username.text.toString()
             user.password = binding.password.text.toString()
             if(user.username != "" || user.username.isNotEmpty()){
-                //look up user
                 var userExists = app!!.users.findByUsername(user.username) as User?
-
                 if(userExists != null){
-                    //check password
-                    if( user.password == userExists.password){
+                    var passwordCheck = BCrypt.verifyer().verify(user.password.toCharArray(), userExists.password);
+                    if(passwordCheck.verified){
                         Intent(this, MainActivity::class.java).also{
                             startActivity(it)
                         }
@@ -47,9 +47,9 @@ class LoginActivity : AppCompatActivity() {
                             .show()
                     }
                 } else {
-
                     if(user.password != "" || user.password.isNotEmpty()){
-                       var user = app!!.users.create(user.copy())
+                        user.password = BCrypt.withDefaults().hashToString(12, user.password.toCharArray());
+                        app!!.users.create(user.copy())
                         Snackbar.make(it, R.string.account_created, Snackbar.LENGTH_LONG)
                             .show()
                     } else {
@@ -57,9 +57,6 @@ class LoginActivity : AppCompatActivity() {
                             .show()
                     }
                 }
-
-
-
             } else {
                 Snackbar.make(it, R.string.enter_username, Snackbar.LENGTH_LONG)
                     .show()
