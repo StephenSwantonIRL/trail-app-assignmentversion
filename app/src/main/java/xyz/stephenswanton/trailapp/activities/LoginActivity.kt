@@ -3,6 +3,8 @@ package xyz.stephenswanton.trailapp.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.google.android.material.snackbar.Snackbar
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
         app = application as MainApp
 
-        if(app!!.currentUser != null) {
+        if(app!!.tempUserObject.findAll().isNotEmpty()) {
             Intent(this, MainActivity::class.java).also{
                 startActivity(it)
             }
@@ -41,9 +43,23 @@ class LoginActivity : AppCompatActivity() {
                 if(userExists != null){
                     var passwordCheck = BCrypt.verifyer().verify(user.password.toCharArray(), userExists.password);
                     if(passwordCheck.verified){
-                        Intent(this, MainActivity::class.java).also{
-                            startActivity(it)
-                        }
+                        val stayLoggedInDialog = AlertDialog.Builder(this)
+                            .setTitle("Store Credentials")
+                            .setMessage("Do you want to stay logged in?")
+                            .setPositiveButton("Yes"){ _, _ ->
+                                user.password = BCrypt.withDefaults().hashToString(12, user.password.toCharArray());
+                                app!!.tempUserObject.create(user.copy())
+                                Intent(this, MainActivity::class.java).also{
+                                    startActivity(it)
+                            }
+                            }
+                            .setNegativeButton("No"){ _, _ ->
+                                Intent(this, MainActivity::class.java).also{
+                                    startActivity(it)
+                                }
+                            }
+                        stayLoggedInDialog.show()
+
                     } else {
                         Snackbar.make(it, R.string.invalid_password, Snackbar.LENGTH_LONG)
                             .show()
