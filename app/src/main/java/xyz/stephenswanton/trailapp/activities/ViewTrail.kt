@@ -46,6 +46,7 @@ class ViewTrail : AppCompatActivity() {
         markerListFragment.setArguments(bundle)
 
         var trailMapFragment = TrailMapFragment()
+        trailMapFragment.setArguments(bundle)
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, markerListFragment)

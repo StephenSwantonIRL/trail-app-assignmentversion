@@ -13,13 +13,21 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import xyz.stephenswanton.trailapp.R
+import xyz.stephenswanton.trailapp.models.TrailMarker
 
 class TrailMapFragment : Fragment() {
 
+    private lateinit var markers: List<TrailMarker>
+
     private val callback = OnMapReadyCallback { googleMap ->
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        var locations: MutableList<LatLng> = mutableListOf()
+        for (marker in markers){
+            locations.add(LatLng(marker.latitude.toDouble(), marker.longitude.toDouble()))
+        }
+        for (location in locations) {
+            googleMap.addMarker(MarkerOptions().position(location).title(""))
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locations[0], 11f))
     }
 
     override fun onCreateView(
@@ -32,6 +40,10 @@ class TrailMapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        markers =
+            arguments?.getParcelableArrayList<TrailMarker>("markers") as? List<TrailMarker>
+                ?: listOf<TrailMarker>()
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
     }
