@@ -12,4 +12,9 @@
         android:icon="@drawable/ic_add_trail"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/miLogout"
+        android:title="Log Out"
+        app:showAsAction="never" />
+
 </menu>

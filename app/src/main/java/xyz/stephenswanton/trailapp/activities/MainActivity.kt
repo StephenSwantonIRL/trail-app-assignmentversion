@@ -92,10 +92,17 @@ class MainActivity : AppCompatActivity(), TrailListener {
                         Toast.makeText(this, "You selected No", Toast.LENGTH_LONG)
                     }
                 deleteAllDialog.show()
-
-
             }
-        }
+            R.id.miLogout -> {
+                app!!.tempUserObject.deleteAll()
+                Intent(this, LoginActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }.also {
+                        refreshIntentLauncher.launch(it)
+                    }
+                }
+            }
+
         return true
     }
 
