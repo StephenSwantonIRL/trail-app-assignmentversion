@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import xyz.stephenswanton.trailapp.*
 import xyz.stephenswanton.trailapp.databinding.ActivityMainBinding
@@ -12,6 +13,7 @@ import xyz.stephenswanton.trailapp.main.MainApp
 import xyz.stephenswanton.trailapp.models.Trail
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import timber.log.Timber.i
 
 
@@ -73,12 +75,24 @@ class MainActivity : AppCompatActivity(), TrailListener {
                 refreshIntentLauncher.launch(it)
             }
             R.id.miDeleteAll -> {
-                app!!.trails.deleteAll()
-                Intent(this, MainActivity::class.java).apply{
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                }.also {
-                    refreshIntentLauncher.launch(it)
-                }
+
+                val deleteAllDialog = AlertDialog.Builder(this)
+                    .setTitle("Delete All Trails")
+                    .setMessage("Are you sure you want to delete all Trails?")
+                    .setPositiveButton("Yes"){ _, _ ->
+                        Toast.makeText(this, "You selected Yes, Trails Deleted", Toast.LENGTH_LONG)
+                        app!!.trails.deleteAll()
+                        Intent(this, MainActivity::class.java).apply{
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        }.also {
+                            refreshIntentLauncher.launch(it)
+                        }
+                    }
+                    .setNegativeButton("No"){ _, _ ->
+                        Toast.makeText(this, "You selected No", Toast.LENGTH_LONG)
+                    }
+                deleteAllDialog.show()
+
 
             }
         }
