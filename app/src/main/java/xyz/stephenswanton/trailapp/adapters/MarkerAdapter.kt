@@ -17,6 +17,7 @@ import xyz.stephenswanton.trailapp.models.Trail
 interface NavigateAction {
     fun onDeleteIconClick(marker: Long)
     fun onEditIconClick(marker: TrailMarker)
+    fun onViewIconClick(marker: TrailMarker)
 }
 
 class MarkerAdapter(
@@ -51,6 +52,9 @@ class MarkerAdapter(
                 }
             binding.ivEditMarker.setOnClickListener{
                 listener?.onEditIconClick(marker)
+            }
+            binding.ivViewMarker.setOnClickListener{
+                listener?.onViewIconClick(marker)
             }
         }
             }

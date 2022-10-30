@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etLongitude"
+        android:id="@+id/tvLongitudeView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etLatitude" />
 
     <EditText
-        android:id="@+id/etNotes"
+        android:id="@+id/tvNotesView"
         android:layout_width="0dp"
         android:layout_height="96dp"
         android:layout_marginTop="16dp"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLongitude" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLongitudeView" />
 
     <Button
         android:id="@+id/btnSaveMarker"
@@ -50,6 +50,6 @@
         android:text="Save Marker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNotes" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNotesView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

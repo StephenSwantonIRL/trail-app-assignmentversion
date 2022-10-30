@@ -15,7 +15,7 @@ import timber.log.Timber.i
 import xyz.stephenswanton.trailapp.R
 import xyz.stephenswanton.trailapp.activities.CreateMarker
 import xyz.stephenswanton.trailapp.activities.MainActivity
-import xyz.stephenswanton.trailapp.activities.ViewTrail
+import xyz.stephenswanton.trailapp.activities.ViewMarker
 import xyz.stephenswanton.trailapp.adapters.MarkerAdapter
 import xyz.stephenswanton.trailapp.adapters.NavigateAction
 import xyz.stephenswanton.trailapp.databinding.FragmentMarkerListBinding
@@ -74,11 +74,21 @@ class MarkerListFragment : Fragment(), NavigateAction {
     override fun onEditIconClick(marker: TrailMarker) {
         var app = activity?.application as MainApp?
         activity?.let {
-            var viewTrailIntent = Intent(it, ViewTrail::class.java)
-
             Intent(it, CreateMarker::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 putExtra("marker_edit", marker)
+            }.also {
+                startActivity(it)
+            }
+        }
+    }
+
+    override fun onViewIconClick(marker: TrailMarker) {
+        var app = activity?.application as MainApp?
+        activity?.let {
+            Intent(it, ViewMarker::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                putExtra("marker_view", marker)
             }.also {
                 startActivity(it)
             }

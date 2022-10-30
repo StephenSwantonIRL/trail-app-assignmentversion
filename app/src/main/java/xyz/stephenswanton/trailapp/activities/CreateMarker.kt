@@ -48,6 +48,7 @@ class CreateMarker : AppCompatActivity() {
             marker = intent.extras?.getParcelable("marker_edit")!!
             binding.etLatitude.setText(marker.latitude)
             binding.etLongitude.setText(marker.longitude)
+            binding.etNotes.setText(marker.notes)
             binding.btnSaveMarker.setText(R.string.save_marker)
             Picasso.get()
                 .load(marker.image)
