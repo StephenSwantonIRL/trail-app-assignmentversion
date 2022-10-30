@@ -11,14 +11,13 @@
         android:id="@+id/etLatitude"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:hint="Latitude"
-        android:minHeight="48dp"
         android:inputType="numberDecimal|numberSigned"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvOrManualLocation" />
 
     <EditText
         android:id="@+id/etLongitude"
@@ -76,6 +75,25 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@mipmap/ic_launcher"
         tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/tvOrManualLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_manually"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUseLocation" />
+
+    <Button
+        android:id="@+id/btnUseLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Use Current Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

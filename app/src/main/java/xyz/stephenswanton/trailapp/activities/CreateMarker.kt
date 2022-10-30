@@ -1,12 +1,18 @@
 package xyz.stephenswanton.trailapp.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import xyz.stephenswanton.trailapp.R
@@ -21,19 +27,20 @@ import xyz.stephenswanton.trailapp.models.generateRandomId
 class CreateMarker : AppCompatActivity() {
     private lateinit var binding: ActivityCreateMarkerBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     val IMAGE_REQUEST = 1
     var app : MainApp? = null
     var marker = TrailMarker(generateRandomId(),"0","0", "")
-    var latitudeRegex: Regex = """^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$""".toRegex()
-    var longitudeRegex: Regex = """^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))${'$'}""".toRegex()
+    var latitudeRegex: Regex = """^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$""".toRegex()
+    var longitudeRegex: Regex = """^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))${'$'}""".toRegex()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateMarkerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         app = application as MainApp
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         var edit = false
 
         if (intent.hasExtra("marker_edit")) {
@@ -93,9 +100,32 @@ class CreateMarker : AppCompatActivity() {
                 }
             }
 
+        binding.btnUseLocation
+            .setOnClickListener{
+                    if (ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location: Location? ->
+                                binding.etLatitude.setText(location?.latitude.toString())
+                                binding.etLongitude.setText(location?.longitude.toString())
+
+                            }
+                    }
+                }
+
         binding.btnAddImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
+
+
+
 
         registerImagePickerCallback()
 
@@ -131,5 +161,20 @@ class CreateMarker : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                // Precise location access granted.
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                // Only approximate location access granted.
+            } else -> {
+            // No location access granted.
+        }
+        }
     }
 }
