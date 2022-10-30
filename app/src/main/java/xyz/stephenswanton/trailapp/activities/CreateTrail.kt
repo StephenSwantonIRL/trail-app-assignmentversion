@@ -1,33 +1,39 @@
 package xyz.stephenswanton.trailapp.activities
 
+import android.R.array
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber.i
 import xyz.stephenswanton.trailapp.R
 import xyz.stephenswanton.trailapp.databinding.ActivityCreateTrailBinding
 import xyz.stephenswanton.trailapp.fragments.MarkerListFragment
 import xyz.stephenswanton.trailapp.main.MainApp
 import xyz.stephenswanton.trailapp.models.Trail
 import xyz.stephenswanton.trailapp.models.generateRandomId
-import timber.log.Timber
-import timber.log.Timber.i
-import androidx.activity.result.contract.ActivityResultContracts
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class CreateTrail : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTrailBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     var app : MainApp? = null
     var edit: Boolean = false
+    var trail = Trail( generateRandomId(), "","" )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var trail = Trail( generateRandomId(), "","" )
+
         binding = ActivityCreateTrailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         app = application as MainApp
@@ -40,6 +46,12 @@ class CreateTrail : AppCompatActivity() {
             app!!.tempTrail = app!!.trails.findById(trail.id) ?: trail
             binding.etTrailName.setText(trail.name)
             binding.etTrailDescription.setText(trail.description)
+            var trailTypes = resources.getStringArray(R.array.trail_type)
+            i(trailTypes.toString())
+            var spinnerPosition = trailTypes.indexOf(trail.trailType) as Int
+            i("SpinnerPosition")
+            i(spinnerPosition.toString())
+            binding.spTrailType.setSelection(spinnerPosition)
         }
 
         if (!edit) {
@@ -74,6 +86,21 @@ class CreateTrail : AppCompatActivity() {
 
              }
             }
+
+        binding.spTrailType.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                trail.trailType = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
         fun registerRefreshCallback() {
             refreshIntentLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -106,6 +133,7 @@ class CreateTrail : AppCompatActivity() {
                     Toast.makeText(this,R.string.add_a_marker, Toast.LENGTH_LONG).show()
                 } else {
                     app!!.tempTrail.name = binding.etTrailName.text.toString()
+                    app!!.tempTrail.trailType = trail.trailType.toString()
                     app!!.tempTrail.description = binding.etTrailDescription.text.toString()
                     if(edit){
                         app!!.trails.update(app!!.tempTrail.copy())
