@@ -21,4 +21,7 @@
     <string name="enter_password">enter password</string>
     <string name="account_created">Account created, you may now log in.</string>
     <string name="select_marker_image">Select an Image</string>
+    <string name="enter_username_as_email">You must provide an email as username</string>
+    <string name="enter_valid_latitude">"You must enter a valid latitude. "</string>
+    <string name="enter_valid_longitude">You must enter a valid longitude.</string>
 </resources>

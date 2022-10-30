@@ -55,4 +55,5 @@ dependencies {
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.7.10'
 }

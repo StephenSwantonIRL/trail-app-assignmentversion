@@ -33,47 +33,63 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         var user: User = User ("","")
-
+        val emailRegex: Regex = """^[a-zA-Z0-9.!#${'$'}%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*${'$'}""".toRegex()
+        val passwordRegex: Regex = """^.{5}.*$""".toRegex()
 
         binding.btnLogin.setOnClickListener{
             user.username = binding.username.text.toString()
             user.password = binding.password.text.toString()
             if(user.username != "" || user.username.isNotEmpty()){
-                var userExists = app!!.users.findByUsername(user.username) as User?
-                if(userExists != null){
-                    var passwordCheck = BCrypt.verifyer().verify(user.password.toCharArray(), userExists.password);
-                    if(passwordCheck.verified){
-                        val stayLoggedInDialog = AlertDialog.Builder(this)
-                            .setTitle("Store Credentials")
-                            .setMessage("Do you want to stay logged in?")
-                            .setPositiveButton("Yes"){ _, _ ->
-                                user.password = BCrypt.withDefaults().hashToString(12, user.password.toCharArray());
-                                app!!.tempUserObject.create(user.copy())
-                                Intent(this, MainActivity::class.java).also{
-                                    startActivity(it)
-                            }
-                            }
-                            .setNegativeButton("No"){ _, _ ->
-                                Intent(this, MainActivity::class.java).also{
-                                    startActivity(it)
+                if(emailRegex.matches(user.username)) {
+                    var userExists = app!!.users.findByUsername(user.username) as User?
+                    if (userExists != null) {
+                        var passwordCheck = BCrypt.verifyer()
+                            .verify(user.password.toCharArray(), userExists.password);
+                        if (passwordCheck.verified) {
+                            val stayLoggedInDialog = AlertDialog.Builder(this)
+                                .setTitle("Store Credentials")
+                                .setMessage("Do you want to stay logged in?")
+                                .setPositiveButton("Yes") { _, _ ->
+                                    user.password = BCrypt.withDefaults()
+                                        .hashToString(12, user.password.toCharArray());
+                                    app!!.tempUserObject.create(user.copy())
+                                    Intent(this, MainActivity::class.java).also {
+                                        startActivity(it)
+                                    }
                                 }
-                            }
-                        stayLoggedInDialog.show()
+                                .setNegativeButton("No") { _, _ ->
+                                    Intent(this, MainActivity::class.java).also {
+                                        startActivity(it)
+                                    }
+                                }
+                            stayLoggedInDialog.show()
 
+                        } else {
+                            Snackbar.make(it, R.string.invalid_password, Snackbar.LENGTH_LONG)
+                                .show()
+                        }
                     } else {
-                        Snackbar.make(it, R.string.invalid_password, Snackbar.LENGTH_LONG)
-                            .show()
+                        if (user.password != "" || user.password.isNotEmpty()) {
+                            if(passwordRegex.matches(user.password))
+                            {
+                                user.password =
+                                    BCrypt.withDefaults()
+                                        .hashToString(12, user.password.toCharArray());
+                                app!!.users.create(user.copy())
+                                Snackbar.make(it, R.string.account_created, Snackbar.LENGTH_LONG)
+                                    .show()
+                            } else {
+                                Snackbar.make(it, R.string.invalid_password, Snackbar.LENGTH_LONG)
+                                    .show()
+                            }
+                        } else {
+                            Snackbar.make(it, R.string.enter_password, Snackbar.LENGTH_LONG)
+                                .show()
+                        }
                     }
                 } else {
-                    if(user.password != "" || user.password.isNotEmpty()){
-                        user.password = BCrypt.withDefaults().hashToString(12, user.password.toCharArray());
-                        app!!.users.create(user.copy())
-                        Snackbar.make(it, R.string.account_created, Snackbar.LENGTH_LONG)
-                            .show()
-                    } else {
-                        Snackbar.make(it, R.string.enter_password, Snackbar.LENGTH_LONG)
-                            .show()
-                    }
+                    Snackbar.make(it, R.string.enter_username_as_email, Snackbar.LENGTH_LONG)
+                        .show()
                 }
             } else {
                 Snackbar.make(it, R.string.enter_username, Snackbar.LENGTH_LONG)

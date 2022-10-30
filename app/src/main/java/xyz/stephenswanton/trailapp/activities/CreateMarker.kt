@@ -25,6 +25,8 @@ class CreateMarker : AppCompatActivity() {
     val IMAGE_REQUEST = 1
     var app : MainApp? = null
     var marker = TrailMarker(generateRandomId(),"0","0", "")
+    var latitudeRegex: Regex = """^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$""".toRegex()
+    var longitudeRegex: Regex = """^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))${'$'}""".toRegex()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +62,16 @@ class CreateMarker : AppCompatActivity() {
                         Snackbar.make(it, R.string.enter_longitude, Snackbar.LENGTH_LONG)
                             .show()
                     }
+                } else if (!latitudeRegex.matches(marker.latitude) || !longitudeRegex.matches(marker.longitude) ) {
+                    if (!latitudeRegex.matches(marker.latitude)) {
+                        Snackbar.make(it, R.string.enter_valid_latitude, Snackbar.LENGTH_LONG)
+                            .show()
+                    }
+                    if (!longitudeRegex.matches(marker.longitude)) {
+                        Snackbar.make(it, R.string.enter_valid_longitude, Snackbar.LENGTH_LONG)
+                            .show()
+                    }
+
                 } else {
                     if(edit){
                         app!!.markersArray = app!!.markersArray.filter{item -> item.id != marker.id} as MutableList<TrailMarker>
