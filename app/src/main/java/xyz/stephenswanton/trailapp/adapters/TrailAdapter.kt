@@ -9,6 +9,7 @@ import xyz.stephenswanton.trailapp.models.Trail
 interface TrailListener {
     fun onEditIconClick(trail: Trail)
     fun onDeleteTrailIconClick(trail: Trail)
+    fun onViewIconClick(trail: Trail)
 }
 
 
@@ -38,6 +39,7 @@ class TrailAdapter(
 
         fun bind(trail: Trail, listener: TrailListener) {
             binding.tvTrailName.text = trail.name
+            binding.ivViewTrail.setOnClickListener { listener.onViewIconClick(trail) }
             binding.ivEdit.setOnClickListener { listener.onEditIconClick(trail) }
             binding.ivDeleteTrail.setOnClickListener { listener.onDeleteTrailIconClick(trail) }
         }

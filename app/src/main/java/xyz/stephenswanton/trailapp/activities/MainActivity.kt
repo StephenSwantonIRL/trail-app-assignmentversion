@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity(), TrailListener {
             }
         }
 
-
-
         loadTrails()
 
     }
@@ -107,6 +105,15 @@ class MainActivity : AppCompatActivity(), TrailListener {
     }
 
     override fun onEditIconClick(trail: Trail) {
+        Intent(this, CreateTrail::class.java).apply{
+            putExtra("trail_edit", trail)
+
+        }.also{
+            refreshIntentLauncher.launch(it)
+        }
+    }
+
+    override fun onViewIconClick(trail: Trail) {
         Intent(this, ViewTrail::class.java).apply{
             putExtra("trail_view", trail)
 

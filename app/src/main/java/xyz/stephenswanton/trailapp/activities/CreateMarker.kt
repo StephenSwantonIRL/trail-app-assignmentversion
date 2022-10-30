@@ -125,11 +125,7 @@ class CreateMarker : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
-
-
-
         registerImagePickerCallback()
-
 
     }
 

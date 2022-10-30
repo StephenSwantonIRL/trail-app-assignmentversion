@@ -23,6 +23,7 @@ class CreateTrail : AppCompatActivity() {
     private lateinit var binding: ActivityCreateTrailBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     var app : MainApp? = null
+    var edit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +32,20 @@ class CreateTrail : AppCompatActivity() {
         setContentView(binding.root)
         app = application as MainApp
         app!!.markersArray = mutableListOf()
-        var edit = false
+        edit = false
+        if (intent.hasExtra("trail_edit")) {
+
+            edit = true
+            trail = intent.extras?.getParcelable<Trail>("trail_edit")!!
+            app!!.tempTrail = app!!.trails.findById(trail.id) ?: trail
+            binding.etTrailName.setText(trail.name)
+            binding.etTrailDescription.setText(trail.description)
+        }
+
         if (!edit) {
             app!!.markers = mutableListOf()
+        } else {
+            app!!.markers = app!!.tempTrail.markers
         }
         var markers = app!!.markers
         var markerListFragment = MarkerListFragment()
@@ -93,9 +105,20 @@ class CreateTrail : AppCompatActivity() {
                 if (app!!.tempTrail.name.isEmpty()) {
                     Toast.makeText(this,R.string.add_a_marker, Toast.LENGTH_LONG).show()
                 } else {
-                app!!.trails.create(app!!.tempTrail)
+                    app!!.tempTrail.name = binding.etTrailName.text.toString()
+                    app!!.tempTrail.description = binding.etTrailDescription.text.toString()
+                    if(edit){
+                        app!!.trails.update(app!!.tempTrail.copy())
+                    } else {
+                        app!!.trails.create(app!!.tempTrail.copy())
+                    }
                 app!!.resetTempData()
-                finish()}
+                Intent(this, MainActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }.also {
+                    startActivity(it)
+                }
+                }
 
             };
             R.id.miCancel -> {
