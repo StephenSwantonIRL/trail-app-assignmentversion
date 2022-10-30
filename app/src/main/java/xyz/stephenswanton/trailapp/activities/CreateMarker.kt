@@ -103,6 +103,11 @@ class CreateMarker : AppCompatActivity() {
 
         binding.btnUseLocation
             .setOnClickListener{
+
+                locationPermissionRequest.launch(arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION))
+
                     if (ActivityCompat.checkSelfPermission(
                             this,
                             Manifest.permission.ACCESS_FINE_LOCATION
